@@ -6,23 +6,23 @@ package com.praktikum.ppl;
  */
 public class PenentuanGrade {
 
-    /**
-     * Menentukan grade mahasiswa.
-     *
-     * @param nilaiAkhir nilai akhir mahasiswa
-     * @return grade: A, B, C, D, atau E
-     */
-    public String tentukanGrade(double nilaiAkhir) {
-        if (nilaiAkhir >= 85) {
-            return "A";
-        } else if (nilaiAkhir >= 70) {
-            return "B";
-        } else if (nilaiAkhir >= 60) {
-            return "C";
-        } else if (nilaiAkhir >= 50) {
-            return "D";
-        } else {
-            return "E";
-        }
-    }
+	/**
+	 * Menentukan grade mahasiswa.
+	 *
+	 * @param nilaiAkhir nilai akhir mahasiswa
+	 * @return grade: A, B, C, D, atau E
+	 */
+	public String tentukanGrade(double nilaiAkhir) {
+		if (nilaiAkhir >= 85) {
+			return "A";
+		} else if (nilaiAkhir >= 70) {
+			return "B";
+		} else if (nilaiAkhir >= 60) {
+			return "C";
+		} else if (nilaiAkhir >= 50) {
+			return "D";
+		} else {
+			return "E";
+		}
+	}
 }
