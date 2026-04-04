@@ -47,18 +47,18 @@ class ValidasiDataTest {
 
 	@Test
 	@DisplayName("TC6 Nilai UAS < 0")
-	void testNilaiTugasNol() {
+	void testNilaiUASNol() {
 		assertFalse(validasiData.validasi(75, 90, -1));
 	}
 
 	@Test
 	@DisplayName("TC7 Nilai UAS > 100")
-	void testNilaiTugasNol() {
+	void testNilaiUAS100() {
 		assertFalse(validasiData.validasi(75, 90, 101));
 	}
 
 	@Test
-	@DisplayName("TC8 Semua nilai dalam rentang 0-100");
+	@DisplayName("TC8 Semua nilai dalam rentang 0-100")
 	void testNilaiValid() {
 		assertTrue(validasiData.validasi(75, 90, 80));
 	}
