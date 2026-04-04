@@ -16,26 +16,50 @@ class ValidasiDataTest {
 	// Tambahkan test case berdasarkan hasil analisa CFG dan independent path
 
 	@Test
-	@DisplayName("Semua nilai = 0 → harus return false (belum input)")
+	@DisplayName("TC1 Semua nilai = 0 → harus return false (belum input)")
 	void testSemuaNilaiNol() {
 		assertFalse(validasiData.validasi(0, 0, 0));
 	}
 
 	@Test
-	@DisplayName("Semua nilai valid (0-100) → harus return true")
-	void testNilaiValid() {
-		assertTrue(validasiData.validasi(80, 75, 90));
-	}
-
-	@Test
-	@DisplayName("Ada nilai < 0 → harus return false")
-	void testNilaiNegatif() {
+	@DisplayName("TC2 Nilai tugas < 0")
+	void testNilaiTugasNol() {
 		assertFalse(validasiData.validasi(-1, 75, 90));
 	}
 
 	@Test
-	@DisplayName("Ada nilai > 100 → harus return false")
-	void testNilaiLebihDari100() {
-		assertFalse(validasiData.validasi(80, 101, 90));
+	@DisplayName("TC3 Nilai tugas > 100")
+	void testNilaiTugas100() {
+		assertFalse(validasiData.validasi(101, 75, 90));
+	}
+
+	@Test
+	@DisplayName("TC4 Nilai UTS < 0")
+	void testNilaiUTSNol() {
+		assertFalse(validasiData.validasi(75, -1, 90));
+	}
+
+	@Test
+	@DisplayName("TC 5Nilai UTS > 100")
+	void testNilaiUTS100() {
+		assertFalse(validasiData.validasi(75, -1, 90));
+	}
+
+	@Test
+	@DisplayName("TC6 Nilai UAS < 0")
+	void testNilaiTugasNol() {
+		assertFalse(validasiData.validasi(75, 90, -1));
+	}
+
+	@Test
+	@DisplayName("TC7 Nilai UAS > 100")
+	void testNilaiTugasNol() {
+		assertFalse(validasiData.validasi(75, 90, 101));
+	}
+
+	@Test
+	@DisplayName("TC8 Semua nilai dalam rentang 0-100");
+	void testNilaiValid() {
+		assertTrue(validasiData.validasi(75, 90, 80));
 	}
 }
