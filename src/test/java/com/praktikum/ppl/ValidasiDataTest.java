@@ -16,6 +16,12 @@ class ValidasiDataTest {
 	// Tambahkan test case berdasarkan hasil analisa CFG dan independent path
 
 	@Test
+	@DisplayName("Semua nilai = 0 → harus return false (belum input)")
+	void testSemuaNilaiNol() {
+		assertFalse(validasiData.validasi(0, 0, 0));
+	}
+
+	@Test
 	@DisplayName("Semua nilai valid (0-100) → harus return true")
 	void testNilaiValid() {
 		assertTrue(validasiData.validasi(80, 75, 90));
@@ -31,11 +37,5 @@ class ValidasiDataTest {
 	@DisplayName("Ada nilai > 100 → harus return false")
 	void testNilaiLebihDari100() {
 		assertFalse(validasiData.validasi(80, 101, 90));
-	}
-
-	@Test
-	@DisplayName("Semua nilai = 0 → harus return false (belum input)")
-	void testSemuaNilaiNol() {
-		assertFalse(validasiData.validasi(0, 0, 0));
 	}
 }
