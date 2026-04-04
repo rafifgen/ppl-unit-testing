@@ -2,6 +2,10 @@
 
 set -e
 
+# Set JAVA_HOME agar mvn bisa berjalan di bash (Git Bash / WSL)
+export JAVA_HOME="/c/Program Files/Java/jdk-24"
+export PATH="$JAVA_HOME/bin:$PATH"
+
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 TEMP_DIR="$(dirname "$REPO_DIR")/report-temp"
 CURRENT_BRANCH=$(git -C "$REPO_DIR" rev-parse --abbrev-ref HEAD)
