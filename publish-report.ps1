@@ -68,6 +68,7 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 Write-Host "[5/5] Switching back to $CurrentBranch..." -ForegroundColor Yellow
 git checkout $CurrentBranch
+git clean -fd
 
 # Bersihkan temp
 Remove-Item -Recurse -Force $TempDir
