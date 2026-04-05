@@ -40,9 +40,9 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC 5Nilai UTS > 100")
+	@DisplayName("TC 5 Nilai UTS > 100")
 	void testNilaiUTS100() {
-		assertFalse(validasiData.validasi(75, -1, 90));
+		assertFalse(validasiData.validasi(75, 101, 90));
 	}
 
 	@Test
