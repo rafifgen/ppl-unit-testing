@@ -8,6 +8,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test untuk method tentukanKelulusan() pada PengolahNilai.
  * Tanggung jawab: memastikan penentuan status lulus/tidak lulus berjalan benar.
+ *
+ * Setiap test case mengikuti pola tiga tahap:
+ *   1. Setup   (Arrange) → persiapkan data input
+ *   2. Exercise (Act)    → panggil method yang diuji
+ *   3. Verify  (Assert)  → periksa hasil yang diharapkan
  */
 @DisplayName("Test Modul Penentuan Kelulusan")
 class PenentuanKelulusanTest {
@@ -22,18 +27,39 @@ class PenentuanKelulusanTest {
 	@Test
 	@DisplayName("Nilai akhir = 60 (boundary) → harus return 'Lulus'")
 	void testNilai60() {
-		assertEquals("Lulus", pengolahNilai.tentukanKelulusan(60));
+		// Setup
+		double nilaiAkhir = 60;
+
+		// Exercise
+		String result = pengolahNilai.tentukanKelulusan(nilaiAkhir);
+
+		// Verify
+		assertEquals("Lulus", result);
 	}
 
 	@Test
 	@DisplayName("Nilai akhir > 60 → harus return 'Lulus'")
 	void testNilaiLebihDari60() {
-		assertEquals("Lulus", pengolahNilai.tentukanKelulusan(75));
+		// Setup
+		double nilaiAkhir = 75;
+
+		// Exercise
+		String result = pengolahNilai.tentukanKelulusan(nilaiAkhir);
+
+		// Verify
+		assertEquals("Lulus", result);
 	}
 
 	@Test
 	@DisplayName("Nilai akhir < 60 (boundary) → harus return 'Tidak Lulus'")
 	void testNilaiKurangDari60() {
-		assertEquals("Tidak Lulus", pengolahNilai.tentukanKelulusan(59));
+		// Setup
+		double nilaiAkhir = 59;
+
+		// Exercise
+		String result = pengolahNilai.tentukanKelulusan(nilaiAkhir);
+
+		// Verify
+		assertEquals("Tidak Lulus", result);
 	}
 }

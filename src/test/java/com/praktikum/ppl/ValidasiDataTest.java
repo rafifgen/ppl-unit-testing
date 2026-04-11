@@ -8,6 +8,11 @@ import org.junit.jupiter.api.Test;
 /**
  * Test untuk method validasi() pada PengolahNilai.
  * Tanggung jawab: memastikan validasi input NilaiMahasiswa berjalan benar.
+ *
+ * Setiap test case mengikuti pola tiga tahap:
+ *   1. Setup   (Arrange) → persiapkan data input
+ *   2. Exercise (Act)    → panggil method yang diuji
+ *   3. Verify  (Assert)  → periksa hasil yang diharapkan
  */
 @DisplayName("Test Modul Validasi Data")
 class ValidasiDataTest {
@@ -22,48 +27,104 @@ class ValidasiDataTest {
 	@Test
 	@DisplayName("TC1 Semua nilai = 0 → harus return false (belum input)")
 	void testSemuaNilaiNol() {
-		assertFalse(pengolahNilai.validasi(new NilaiMahasiswa(0, 0, 0)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(0, 0, 0);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertFalse(result);
 	}
 
 	@Test
-	@DisplayName("TC2 Nilai tugas < 0")
+	@DisplayName("TC2 Nilai tugas < 0 → harus return false")
 	void testNilaiTugasNegatif() {
-		assertFalse(pengolahNilai.validasi(new NilaiMahasiswa(-1, 75, 90)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(-1, 75, 90);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertFalse(result);
 	}
 
 	@Test
-	@DisplayName("TC3 Nilai tugas > 100")
+	@DisplayName("TC3 Nilai tugas > 100 → harus return false")
 	void testNilaiTugasMelebihi100() {
-		assertFalse(pengolahNilai.validasi(new NilaiMahasiswa(101, 75, 90)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(101, 75, 90);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertFalse(result);
 	}
 
 	@Test
-	@DisplayName("TC4 Nilai UTS < 0")
+	@DisplayName("TC4 Nilai UTS < 0 → harus return false")
 	void testNilaiUtsNegatif() {
-		assertFalse(pengolahNilai.validasi(new NilaiMahasiswa(75, -1, 90)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(75, -1, 90);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertFalse(result);
 	}
 
 	@Test
-	@DisplayName("TC5 Nilai UTS > 100")
+	@DisplayName("TC5 Nilai UTS > 100 → harus return false")
 	void testNilaiUtsMelebihi100() {
-		assertFalse(pengolahNilai.validasi(new NilaiMahasiswa(75, 101, 90)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(75, 101, 90);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertFalse(result);
 	}
 
 	@Test
-	@DisplayName("TC6 Nilai UAS < 0")
+	@DisplayName("TC6 Nilai UAS < 0 → harus return false")
 	void testNilaiUasNegatif() {
-		assertFalse(pengolahNilai.validasi(new NilaiMahasiswa(75, 90, -1)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(75, 90, -1);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertFalse(result);
 	}
 
 	@Test
-	@DisplayName("TC7 Nilai UAS > 100")
+	@DisplayName("TC7 Nilai UAS > 100 → harus return false")
 	void testNilaiUasMelebihi100() {
-		assertFalse(pengolahNilai.validasi(new NilaiMahasiswa(75, 90, 101)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(75, 90, 101);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertFalse(result);
 	}
 
 	@Test
-	@DisplayName("TC8 Semua nilai dalam rentang 0-100")
+	@DisplayName("TC8 Semua nilai dalam rentang 0-100 → harus return true")
 	void testNilaiValid() {
-		assertTrue(pengolahNilai.validasi(new NilaiMahasiswa(75, 90, 80)));
+		// Setup
+		NilaiMahasiswa input = new NilaiMahasiswa(75, 90, 80);
+
+		// Exercise
+		boolean result = pengolahNilai.validasi(input);
+
+		// Verify
+		assertTrue(result);
 	}
 }
