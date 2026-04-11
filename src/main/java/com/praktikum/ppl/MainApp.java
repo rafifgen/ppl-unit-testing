@@ -4,24 +4,19 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Main Application - Pengolahan Nilai Mahasiswa
+ * Main Application — UI Layer
  *
- * Aplikasi ini mengelola proses pengolahan nilai mahasiswa secara interaktif.
- * Modul yang digunakan:
- *   - ValidasiData       : memvalidasi input nilai
- *   - HitungNilaiAkhir   : menghitung nilai akhir berdasarkan bobot
- *   - PenentuanGrade     : menentukan grade (A/B/C/D/E)
- *   - PenentuanKelulusan : menentukan status lulus / tidak lulus
+ * Satu-satunya tanggung jawab kelas ini:
+ *   1. Menerima input dari pengguna
+ *   2. Membungkus input ke dalam objek {@link NilaiMahasiswa}
+ *   3. Mendelegasikan seluruh pengolahan ke {@link PengolahNilai}
+ *   4. Menampilkan hasil dari objek {@link HasilPengolahan}
+ *
+ * MainApp tidak mengetahui logika validasi, perhitungan, maupun penentuan grade.
  */
 public class MainApp {
 
-	// Inisialisasi semua modul
-	private static final ValidasiData validasiData = new ValidasiData();
-	private static final HitungNilaiAkhir hitungNilaiAkhir =
-		new HitungNilaiAkhir();
-	private static final PenentuanGrade penentuanGrade = new PenentuanGrade();
-	private static final PenentuanKelulusan penentuanKelulusan =
-		new PenentuanKelulusan();
+	private static final PengolahNilai pengolahNilai = new PengolahNilai();
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -30,31 +25,24 @@ public class MainApp {
 		clearScreen();
 		tampilkanHeader();
 
-		// Loop menu utama
 		while (running) {
 			tampilkanMenu();
 			System.out.print("Pilih menu : ");
-			String pilihanInput = scanner.nextLine().trim();
+			String pilihan = scanner.nextLine().trim();
 
-			switch (pilihanInput) {
+			switch (pilihan) {
 				case "1":
 					prosesInputNilai(scanner);
 					break;
 				case "2":
 					clearScreen();
-					System.out.println(
-						"============================================="
-					);
+					System.out.println("=============================================");
 					System.out.println("   Terima kasih! Program selesai.");
-					System.out.println(
-						"============================================="
-					);
+					System.out.println("=============================================");
 					running = false;
 					break;
 				default:
-					System.out.println(
-						"\n  [!] Pilihan tidak valid. Masukkan angka 1 atau 2.\n"
-					);
+					System.out.println("\n  [!] Pilihan tidak valid. Masukkan angka 1 atau 2.\n");
 					break;
 			}
 		}
@@ -62,47 +50,73 @@ public class MainApp {
 		scanner.close();
 	}
 
+	// -------------------------------------------------------------------------
+	// Input
+	// -------------------------------------------------------------------------
+
 	/**
-	 * Membersihkan layar terminal.
-	 * Mendukung Windows (cls) dan Unix/Linux/macOS (clear).
-	 * Jika gagal, fallback dengan mencetak baris kosong.
+	 * Mengelola sesi input nilai mahasiswa.
+	 * Membaca input, membungkus ke NilaiMahasiswa, minta ulang jika tidak valid.
 	 */
-	private static void clearScreen() {
-		try {
-			String os = System.getProperty("os.name").toLowerCase();
-			ProcessBuilder pb;
-			if (os.contains("windows")) {
-				pb = new ProcessBuilder("cmd", "/c", "cls");
-			} else {
-				pb = new ProcessBuilder("clear");
+	private static void prosesInputNilai(Scanner scanner) {
+		clearScreen();
+		tampilkanHeader();
+		System.out.println("\n  --- INPUT NILAI MAHASISWA ---");
+
+		HasilPengolahan hasil;
+
+		do {
+			double tugas = bacaNilai(scanner, "  Nilai Tugas (0-100) : ");
+			double uts   = bacaNilai(scanner, "  Nilai UTS   (0-100) : ");
+			double uas   = bacaNilai(scanner, "  Nilai UAS   (0-100) : ");
+
+			// Bungkus input ke domain object lalu delegasikan ke PengolahNilai
+			NilaiMahasiswa nilaiMahasiswa = new NilaiMahasiswa(tugas, uts, uas);
+			hasil = pengolahNilai.proses(nilaiMahasiswa);
+
+			if (!hasil.isValid()) {
+				System.out.println("\n  [!] " + hasil.getPesanError());
+				System.out.println("  Silakan input ulang.\n");
 			}
-			pb.inheritIO().start().waitFor();
-		} catch (IOException | InterruptedException e) {
-			// Fallback: cetak baris kosong sebanyak 50 baris
-			for (int i = 0; i < 50; i++) {
-				System.out.println();
+		} while (!hasil.isValid());
+
+		tampilkanHasil(hasil);
+		tekanTombolUntukLanjut(scanner);
+	}
+
+	/**
+	 * Membaca satu nilai numerik dari pengguna.
+	 * Ulangi jika input bukan angka.
+	 */
+	private static double bacaNilai(Scanner scanner, String prompt) {
+		while (true) {
+			System.out.print(prompt);
+			try {
+				return Double.parseDouble(scanner.nextLine().trim());
+			} catch (NumberFormatException e) {
+				System.out.println("  [!] Input harus berupa angka. Coba lagi.");
 			}
 		}
 	}
 
-	/**
-	 * Menampilkan prompt "Tekan [Enter] untuk melanjutkan..."
-	 * dan menunggu pengguna menekan Enter, lalu clear screen
-	 * dan tampilkan header kembali.
-	 *
-	 * @param scanner objek Scanner untuk membaca input pengguna
-	 */
-	private static void tekanTombolUntukLanjut(Scanner scanner) {
-		System.out.println("\n---------------------------------------------");
-		System.out.print("  Tekan [Enter] untuk kembali ke menu...");
-		scanner.nextLine();
-		clearScreen();
-		tampilkanHeader();
+	// -------------------------------------------------------------------------
+	// Output
+	// -------------------------------------------------------------------------
+
+	private static void tampilkanHasil(HasilPengolahan hasil) {
+		System.out.println("\n=============================================");
+		System.out.println("  HASIL PENGOLAHAN NILAI");
+		System.out.println("=============================================");
+		System.out.printf("  Nilai Tugas  (30%%) : %.2f%n", hasil.getNilaiTugas());
+		System.out.printf("  Nilai UTS    (30%%) : %.2f%n", hasil.getNilaiUts());
+		System.out.printf("  Nilai UAS    (40%%) : %.2f%n", hasil.getNilaiUas());
+		System.out.println("---------------------------------------------");
+		System.out.printf("  Nilai Akhir        : %.2f%n", hasil.getNilaiAkhir());
+		System.out.printf("  Grade              : %s%n",   hasil.getGrade());
+		System.out.printf("  Status Kelulusan   : %s%n",   hasil.getStatusKelulusan());
+		System.out.println("=============================================");
 	}
 
-	/**
-	 * Menampilkan header aplikasi.
-	 */
 	private static void tampilkanHeader() {
 		System.out.println("=============================================");
 		System.out.println("   SISTEM PENGOLAHAN NILAI MAHASISWA");
@@ -110,9 +124,6 @@ public class MainApp {
 		System.out.println("=============================================");
 	}
 
-	/**
-	 * Menampilkan menu utama.
-	 */
 	private static void tampilkanMenu() {
 		System.out.println("\n---------------------------------------------");
 		System.out.println("  MENU UTAMA");
@@ -122,131 +133,23 @@ public class MainApp {
 		System.out.println("---------------------------------------------");
 	}
 
-	/**
-	 * Mengelola proses input nilai mahasiswa.
-	 * Memanggil modul ValidasiData secara berulang hingga data valid,
-	 * kemudian memanggil modul-modul komputasi dan menampilkan hasilnya.
-	 *
-	 * @param scanner objek Scanner untuk membaca input pengguna
-	 */
-	private static void prosesInputNilai(Scanner scanner) {
+	private static void tekanTombolUntukLanjut(Scanner scanner) {
+		System.out.println("\n---------------------------------------------");
+		System.out.print("  Tekan [Enter] untuk kembali ke menu...");
+		scanner.nextLine();
 		clearScreen();
 		tampilkanHeader();
-		System.out.println("\n  --- INPUT NILAI MAHASISWA ---");
-
-		double nilaiTugas = 0,
-			nilaiUts = 0,
-			nilaiUas = 0;
-		boolean dataValid = false;
-
-		// Loop input: ulangi selama data tidak valid
-		while (!dataValid) {
-			nilaiTugas = bacaNilai(scanner, "  Nilai Tugas (0-100) : ");
-			nilaiUts = bacaNilai(scanner, "  Nilai UTS   (0-100) : ");
-			nilaiUas = bacaNilai(scanner, "  Nilai UAS   (0-100) : ");
-
-			// Panggil modul ValidasiData
-			dataValid = validasiData.validasi(nilaiTugas, nilaiUts, nilaiUas);
-
-			if (!dataValid) {
-				System.out.println("\n  [!] Data tidak valid!");
-				System.out.println(
-					"      - Pastikan semua nilai berada di rentang 0-100."
-				);
-				System.out.println(
-					"      - Nilai tidak boleh semuanya 0 (dianggap belum diisi)."
-				);
-				System.out.println("  Silakan input ulang.\n");
-			}
-		}
-
-		// Panggil modul HitungNilaiAkhir
-		double nilaiAkhir = hitungNilaiAkhir.hitung(
-			nilaiTugas,
-			nilaiUts,
-			nilaiUas
-		);
-
-		if (nilaiAkhir == -1) {
-			System.out.println(
-				"\n  [!] Terjadi kesalahan saat menghitung nilai akhir."
-			);
-			tekanTombolUntukLanjut(scanner);
-			return;
-		}
-
-		// Panggil modul PenentuanGrade
-		String grade = penentuanGrade.tentukanGrade(nilaiAkhir);
-
-		// Panggil modul PenentuanKelulusan
-		String statusKelulusan = penentuanKelulusan.tentukanKelulusan(
-			nilaiAkhir
-		);
-
-		// Tampilkan hasil
-		tampilkanHasil(
-			nilaiTugas,
-			nilaiUts,
-			nilaiUas,
-			nilaiAkhir,
-			grade,
-			statusKelulusan
-		);
-
-		// Tunggu pengguna menekan Enter, lalu clear screen
-		tekanTombolUntukLanjut(scanner);
 	}
 
-	/**
-	 * Membaca input nilai numerik dari pengguna.
-	 * Akan terus meminta input jika format tidak valid (bukan angka).
-	 *
-	 * @param scanner objek Scanner
-	 * @param prompt  teks yang ditampilkan sebelum input
-	 * @return nilai numerik yang dimasukkan pengguna
-	 */
-	private static double bacaNilai(Scanner scanner, String prompt) {
-		while (true) {
-			System.out.print(prompt);
-			String input = scanner.nextLine().trim();
-			try {
-				return Double.parseDouble(input);
-			} catch (NumberFormatException e) {
-				System.out.println(
-					"  [!] Input harus berupa angka. Coba lagi."
-				);
-			}
+	private static void clearScreen() {
+		try {
+			String os = System.getProperty("os.name").toLowerCase();
+			ProcessBuilder pb = os.contains("windows")
+				? new ProcessBuilder("cmd", "/c", "cls")
+				: new ProcessBuilder("clear");
+			pb.inheritIO().start().waitFor();
+		} catch (IOException | InterruptedException e) {
+			for (int i = 0; i < 50; i++) System.out.println();
 		}
-	}
-
-	/**
-	 * Menampilkan hasil pengolahan nilai mahasiswa.
-	 *
-	 * @param tugas   nilai tugas
-	 * @param uts     nilai UTS
-	 * @param uas     nilai UAS
-	 * @param akhir   nilai akhir hasil perhitungan
-	 * @param grade   grade yang diperoleh
-	 * @param status  status kelulusan
-	 */
-	private static void tampilkanHasil(
-		double tugas,
-		double uts,
-		double uas,
-		double akhir,
-		String grade,
-		String status
-	) {
-		System.out.println("\n=============================================");
-		System.out.println("  HASIL PENGOLAHAN NILAI");
-		System.out.println("=============================================");
-		System.out.printf("  Nilai Tugas  (30%%) : %.2f%n", tugas);
-		System.out.printf("  Nilai UTS    (30%%) : %.2f%n", uts);
-		System.out.printf("  Nilai UAS    (40%%) : %.2f%n", uas);
-		System.out.println("---------------------------------------------");
-		System.out.printf("  Nilai Akhir        : %.2f%n", akhir);
-		System.out.printf("  Grade              : %s%n", grade);
-		System.out.printf("  Status Kelulusan   : %s%n", status);
-		System.out.println("=============================================");
 	}
 }

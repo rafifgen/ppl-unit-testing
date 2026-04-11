@@ -5,10 +5,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test untuk method tentukanKelulusan() pada PengolahNilai.
+ * Tanggung jawab: memastikan penentuan status lulus/tidak lulus berjalan benar.
+ */
 @DisplayName("Test Modul Penentuan Kelulusan")
 class PenentuanKelulusanTest {
 
-	private final PenentuanKelulusan penentuanKelulusan = new PenentuanKelulusan();
+	private final PengolahNilai pengolahNilai = new PengolahNilai();
 
 	// =====================
 	//  PATH TESTING - TODO
@@ -18,22 +22,18 @@ class PenentuanKelulusanTest {
 	@Test
 	@DisplayName("Nilai akhir = 60 (boundary) → harus return 'Lulus'")
 	void testNilai60() {
-		String result = penentuanKelulusan.tentukanKelulusan(60);
-		assertEquals("Lulus", result);
+		assertEquals("Lulus", pengolahNilai.tentukanKelulusan(60));
 	}
 
 	@Test
 	@DisplayName("Nilai akhir > 60 → harus return 'Lulus'")
 	void testNilaiLebihDari60() {
-		String result = penentuanKelulusan.tentukanKelulusan(75);
-		assertEquals("Lulus", result);
+		assertEquals("Lulus", pengolahNilai.tentukanKelulusan(75));
 	}
 
 	@Test
 	@DisplayName("Nilai akhir < 60 (boundary) → harus return 'Tidak Lulus'")
 	void testNilaiKurangDari60() {
-		String result = penentuanKelulusan.tentukanKelulusan(59);
-		assertEquals("Tidak Lulus", result);
+		assertEquals("Tidak Lulus", pengolahNilai.tentukanKelulusan(59));
 	}
-
 }
