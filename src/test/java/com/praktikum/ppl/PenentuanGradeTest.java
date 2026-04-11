@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
  * Tanggung jawab: memastikan penentuan grade A/B/C/D/E berjalan benar.
  *
  * Setiap test case mengikuti pola tiga tahap:
- *   1. Setup   (Arrange) → persiapkan data input
- *   2. Exercise (Act)    → panggil method yang diuji
- *   3. Verify  (Assert)  → periksa hasil yang diharapkan
+ * 1. Setup (Arrange) → persiapkan data input
+ * 2. Exercise (Act) → panggil method yang diuji
+ * 3. Verify (Assert) → periksa hasil yang diharapkan
  */
 @DisplayName("Test Modul Penentuan Grade")
 class PenentuanGradeTest {
@@ -20,97 +20,127 @@ class PenentuanGradeTest {
 	private final PengolahNilai pengolahNilai = new PengolahNilai();
 
 	@Test
-	@DisplayName("Nilai akhir >= 85 → harus return A")
-	void testGradeA() {
+	@DisplayName("Nilai akhir 95 → harus return A")
+	void testGradeATengah() {
 		// Setup
-		double nilaiTengah    = 95;
-		double nilaiBatas     = 85;
-		double nilaiMaksimal  = 100;
+		double nilai = 95;
 
 		// Exercise
-		String resultTengah   = pengolahNilai.tentukanGrade(nilaiTengah);
-		String resultBatas    = pengolahNilai.tentukanGrade(nilaiBatas);
-		String resultMaksimal = pengolahNilai.tentukanGrade(nilaiMaksimal);
+		String result = pengolahNilai.tentukanGrade(nilai);
 
 		// Verify
-		assertEquals("A", resultTengah);
-		assertEquals("A", resultBatas);
-		assertEquals("A", resultMaksimal);
+		assertEquals("A", result);
 	}
 
 	@Test
-	@DisplayName("Nilai akhir >= 70 dan < 85 → harus return B")
-	void testGradeB() {
-		// Setup
-		double nilaiTengah = 75;
-		double nilaiAtas   = 84;
-		double nilaiBatas  = 70;
-
-		// Exercise
-		String resultTengah = pengolahNilai.tentukanGrade(nilaiTengah);
-		String resultAtas   = pengolahNilai.tentukanGrade(nilaiAtas);
-		String resultBatas  = pengolahNilai.tentukanGrade(nilaiBatas);
-
-		// Verify
-		assertEquals("B", resultTengah);
-		assertEquals("B", resultAtas);
-		assertEquals("B", resultBatas);
+	@DisplayName("Nilai akhir 85 (batas bawah) → harus return A")
+	void testGradeABatasBawah() {
+		double nilai = 85;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("A", result);
 	}
 
 	@Test
-	@DisplayName("Nilai akhir >= 60 dan < 70 → harus return C")
-	void testGradeC() {
-		// Setup
-		double nilaiTengah = 65;
-		double nilaiAtas   = 69;
-		double nilaiBatas  = 60;
-
-		// Exercise
-		String resultTengah = pengolahNilai.tentukanGrade(nilaiTengah);
-		String resultAtas   = pengolahNilai.tentukanGrade(nilaiAtas);
-		String resultBatas  = pengolahNilai.tentukanGrade(nilaiBatas);
-
-		// Verify
-		assertEquals("C", resultTengah);
-		assertEquals("C", resultAtas);
-		assertEquals("C", resultBatas);
+	@DisplayName("Nilai akhir 100 (maksimal) → harus return A")
+	void testGradeABatasAtas() {
+		double nilai = 100;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("A", result);
 	}
 
 	@Test
-	@DisplayName("Nilai akhir >= 50 dan < 60 → harus return D")
-	void testGradeD() {
-		// Setup
-		double nilaiTengah = 55;
-		double nilaiAtas   = 59;
-		double nilaiBatas  = 50;
-
-		// Exercise
-		String resultTengah = pengolahNilai.tentukanGrade(nilaiTengah);
-		String resultAtas   = pengolahNilai.tentukanGrade(nilaiAtas);
-		String resultBatas  = pengolahNilai.tentukanGrade(nilaiBatas);
-
-		// Verify
-		assertEquals("D", resultTengah);
-		assertEquals("D", resultAtas);
-		assertEquals("D", resultBatas);
+	@DisplayName("Nilai akhir 75 → harus return B")
+	void testGradeBTengah() {
+		double nilai = 75;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("B", result);
 	}
 
 	@Test
-	@DisplayName("Nilai akhir < 50 → harus return E")
-	void testGradeE() {
-		// Setup
-		double nilaiTengah = 25;
-		double nilaiBatas  = 49;
-		double nilaiNol    = 0;
+	@DisplayName("Nilai akhir 84 (batas atas) → harus return B")
+	void testGradeBBatasAtas() {
+		double nilai = 84;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("B", result);
+	}
 
-		// Exercise
-		String resultTengah = pengolahNilai.tentukanGrade(nilaiTengah);
-		String resultBatas  = pengolahNilai.tentukanGrade(nilaiBatas);
-		String resultNol    = pengolahNilai.tentukanGrade(nilaiNol);
+	@Test
+	@DisplayName("Nilai akhir 70 (batas bawah) → harus return B")
+	void testGradeBBatasBawah() {
+		double nilai = 70;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("B", result);
+	}
 
-		// Verify
-		assertEquals("E", resultTengah);
-		assertEquals("E", resultBatas);
-		assertEquals("E", resultNol);
+	@Test
+	@DisplayName("Nilai akhir 65 → harus return C")
+	void testGradeCTengah() {
+		double nilai = 65;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("C", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 69 (batas atas) → harus return C")
+	void testGradeCBatasAtas() {
+		double nilai = 69;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("C", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 60 (batas bawah) → harus return C")
+	void testGradeCBatasBawah() {
+		double nilai = 60;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("C", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 55 → harus return D")
+	void testGradeDTengah() {
+		double nilai = 55;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("D", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 59 (batas atas) → harus return D")
+	void testGradeDBatasAtas() {
+		double nilai = 59;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("D", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 50 (batas bawah) → harus return D")
+	void testGradeDBatasBawah() {
+		double nilai = 50;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("D", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 25 → harus return E")
+	void testGradeETengah() {
+		double nilai = 25;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("E", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 49 (batas atas) → harus return E")
+	void testGradeEBatasAtas() {
+		double nilai = 49;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("E", result);
+	}
+
+	@Test
+	@DisplayName("Nilai akhir 0 (minimum) → harus return E")
+	void testGradeEBatasBawah() {
+		double nilai = 0;
+		String result = pengolahNilai.tentukanGrade(nilai);
+		assertEquals("E", result);
 	}
 }
