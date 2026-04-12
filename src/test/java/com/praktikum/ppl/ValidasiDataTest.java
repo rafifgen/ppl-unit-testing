@@ -20,7 +20,7 @@ class ValidasiDataTest {
 	private final PengolahNilai pengolahNilai = new PengolahNilai();
 
 	@Test
-	@DisplayName("TC1 Semua nilai = 0 → harus return false (belum input)")
+	@DisplayName("TC1 Menguji nilai invalid dengan semua nilai = 0")
 	void testSemuaNilaiNol() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(0, 0, 0);
@@ -33,7 +33,7 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC2 Nilai tugas < 0 → harus return false")
+	@DisplayName("TC2 Menguji nilai invalid dengan nilaiTugas < 0")
 	void testNilaiTugasNegatif() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(-1, 75, 90);
@@ -46,7 +46,7 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC3 Nilai tugas > 100 → harus return false")
+	@DisplayName("TC3 Menguji nilai invalid dengan nilai tugas > 100")
 	void testNilaiTugasMelebihi100() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(101, 75, 90);
@@ -59,7 +59,7 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC4 Nilai UTS < 0 → harus return false")
+	@DisplayName("TC4 Menguji nilai invalid dengan nilai UTS < 0")
 	void testNilaiUtsNegatif() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(75, -1, 90);
@@ -72,7 +72,7 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC5 Nilai UTS > 100 → harus return false")
+	@DisplayName("TC5 Menguji nilai invalid dengan nilai UTS > 100")
 	void testNilaiUtsMelebihi100() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(75, 101, 90);
@@ -85,7 +85,7 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC6 Nilai UAS < 0 → harus return false")
+	@DisplayName("TC6 Menguji nilai invalid dengan nilai UAS < 0")
 	void testNilaiUasNegatif() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(75, 90, -1);
@@ -98,7 +98,7 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC7 Nilai UAS > 100 → harus return false")
+	@DisplayName("TC7 Menguji nilai invalid dengan nilai UAS > 100")
 	void testNilaiUasMelebihi100() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(75, 90, 101);
@@ -111,7 +111,9 @@ class ValidasiDataTest {
 	}
 
 	@Test
-	@DisplayName("TC8 Semua nilai dalam rentang 0-100 → harus return true")
+	@DisplayName(
+		"TC8 Menguji nilai valid dengan semua nilai dalam rentang 0-100"
+	)
 	void testNilaiValid() {
 		// Setup
 		NilaiMahasiswa input = new NilaiMahasiswa(75, 90, 80);
