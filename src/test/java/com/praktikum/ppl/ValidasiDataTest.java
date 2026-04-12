@@ -19,11 +19,6 @@ class ValidasiDataTest {
 
 	private final PengolahNilai pengolahNilai = new PengolahNilai();
 
-	// =====================
-	//  PATH TESTING - TODO
-	// =====================
-	// Tambahkan test case berdasarkan hasil analisa CFG dan independent path
-
 	@Test
 	@DisplayName("TC1 Semua nilai = 0 → harus return false (belum input)")
 	void testSemuaNilaiNol() {
